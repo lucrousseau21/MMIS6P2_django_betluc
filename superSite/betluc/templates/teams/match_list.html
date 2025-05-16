@@ -123,7 +123,11 @@
                       </div>
                     </div>
                   {% endif %}
-                  <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-primary">Parier</a>
+                  {% if user.is_authenticated %}
+                    <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-primary">Parier</a>
+                  {% else %}
+                    <a href="{% url 'login' %}?next={% url 'teams:match_detail' match.id %}" class="btn btn-primary">Parier</a>
+                  {% endif %}
                 </div>
               </div>
             {% endfor %}
