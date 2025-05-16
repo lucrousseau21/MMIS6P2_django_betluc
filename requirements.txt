@@ -1,0 +1,24 @@
+# Django et ses dépendances principales
+Django>=4.2.0
+Pillow>=10.0.0  # Pour la gestion des images (ImageField)
+python-dotenv>=1.0.0  # Pour la gestion des variables d'environnement
+
+# Authentification et formulaires
+django-allauth>=0.54.0  # Pour l'authentification
+django-crispy-forms>=2.0  # Pour de meilleurs formulaires
+crispy-bootstrap5>=0.7  # Pour le style des formulaires
+
+# Gestion des fichiers statiques et médias
+whitenoise>=6.5.0  # Pour servir les fichiers statiques en production
+
+# Déploiement
+gunicorn>=21.2.0  # Serveur WSGI pour la production
+psycopg2-binary>=2.9.6  # Pour PostgreSQL (si vous utilisez PostgreSQL en production)
+
+# Développement
+django-debug-toolbar>=4.2.0  # Pour le débogage
+django-extensions>=3.2.3  # Utilitaires de développement
+
+# Sécurité
+django-cors-headers>=4.2.0  # Pour gérer les CORS
+django-ratelimit>=4.1.0  # Pour limiter les requêtes 
