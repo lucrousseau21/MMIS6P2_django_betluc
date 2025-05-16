@@ -10,5 +10,5 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     path('deposit/', views.deposit, name='deposit'),
     path('withdraw/', views.withdraw, name='withdraw'),
-    path('leaderboard/', views.leaderboard, name='leaderboard'),
+    # path('leaderboard/', views.leaderboard, name='leaderboard'),
 ] 

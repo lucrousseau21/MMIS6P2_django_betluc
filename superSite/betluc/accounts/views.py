@@ -108,40 +108,40 @@ def withdraw(request):
     
     return redirect('accounts:profile')
 
-def leaderboard(request):
-    # Récupérer tous les utilisateurs avec leurs statistiques
-    users = Utilisateur.objects.annotate(
-        total_bets=Count('bets'),
-        won_bets=Count(
-            Case(
-                When(bets__status='won', then=Value(1)),
-                output_field=IntegerField(),
-            )
-        ),
-        total_winnings=Sum(
-            Case(
-                When(
-                    bets__status='won',
-                    then=ExpressionWrapper(
-                        F('bets__amount') * F('bets__odds'),
-                        output_field=DecimalField(max_digits=10, decimal_places=2)
-                    )
-                ),
-                default=Value(Decimal('0')),
-                output_field=DecimalField(max_digits=10, decimal_places=2),
-            )
-        ),
-        total_bet_amount=Sum('bets__amount')
-    ).order_by('-total_winnings')
+# def leaderboard(request):
+#     # Récupérer tous les utilisateurs avec leurs statistiques
+#     users = Utilisateur.objects.annotate(
+#         total_bets=Count('bets'),
+#         won_bets=Count(
+#             Case(
+#                 When(bets__status='won', then=Value(1)),
+#                 output_field=IntegerField(),
+#             )
+#         ),
+#         total_winnings=Sum(
+#             Case(
+#                 When(
+#                     bets__status='won',
+#                     then=ExpressionWrapper(
+#                         F('bets__amount') * F('bets__odds'),
+#                         output_field=DecimalField(max_digits=10, decimal_places=2)
+#                     )
+#                 ),
+#                 default=Value(Decimal('0')),
+#                 output_field=DecimalField(max_digits=10, decimal_places=2),
+#             )
+#         ),
+#         total_bet_amount=Sum('bets__amount')
+#     ).order_by('-total_winnings')
 
-    # Calculer le ROI (Return on Investment) pour chaque utilisateur
-    for user in users:
-        if user.total_bet_amount and user.total_bet_amount > Decimal('0'):
-            user.roi = ((user.total_winnings or Decimal('0')) - user.total_bet_amount) / user.total_bet_amount * Decimal('100')
-        else:
-            user.roi = Decimal('0')
+#     # Calculer le ROI (Return on Investment) pour chaque utilisateur
+#     for user in users:
+#         if user.total_bet_amount and user.total_bet_amount > Decimal('0'):
+#             user.roi = ((user.total_winnings or Decimal('0')) - user.total_bet_amount) / user.total_bet_amount * Decimal('100')
+#         else:
+#             user.roi = Decimal('0')
 
-    context = {
-        'users': users,
-    }
-    return render(request, 'accounts/leaderboard.html', context)
+#     context = {
+#         'users': users,
+#     }
+#     return render(request, 'accounts/leaderboard.html', context)
