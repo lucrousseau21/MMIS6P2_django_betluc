@@ -29,6 +29,5 @@ urlpatterns = [
     path('rules/', views.rules_view, name='rules'),
 ]
 
-# Ajouter les URLs pour servir les fichiers médias en développement
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

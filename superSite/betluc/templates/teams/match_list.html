@@ -65,7 +65,9 @@
                     <span class="team-name">{{ match.away_team.name }}</span>
                   </div>
                 </div>
-                <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-secondary">Suivre le match</a>
+                <div class="match-bottom">
+                  <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-secondary">Suivre le match</a>
+                </div>
               </div>
             {% endfor %}
           </div>
@@ -101,26 +103,28 @@
                     <span class="team-name">{{ match.away_team.name }}</span>
                   </div>
                 </div>
-                {% if match.odds %}
-                  <div class="match-odds">
-                    <div class="odd">
-                      <div class="odd-type">1</div>
-                      <div class="odd-value">{{ match.odds.home_win }}</div>
-                      <div class="odd-label">Domicile</div>
+                <div class="match-bottom">
+                  {% if match.odds %}
+                    <div class="match-odds">
+                      <div class="odd">
+                        <div class="odd-type">1</div>
+                        <div class="odd-value">{{ match.odds.home_win }}</div>
+                        <div class="odd-label">Domicile</div>
+                      </div>
+                      <div class="odd">
+                        <div class="odd-type">X</div>
+                        <div class="odd-value">{{ match.odds.draw }}</div>
+                        <div class="odd-label">Nul</div>
+                      </div>
+                      <div class="odd">
+                        <div class="odd-type">2</div>
+                        <div class="odd-value">{{ match.odds.away_win }}</div>
+                        <div class="odd-label">Extérieur</div>
+                      </div>
                     </div>
-                    <div class="odd">
-                      <div class="odd-type">X</div>
-                      <div class="odd-value">{{ match.odds.draw }}</div>
-                      <div class="odd-label">Nul</div>
-                    </div>
-                    <div class="odd">
-                      <div class="odd-type">2</div>
-                      <div class="odd-value">{{ match.odds.away_win }}</div>
-                      <div class="odd-label">Extérieur</div>
-                    </div>
-                  </div>
-                {% endif %}
-                <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-primary">Parier</a>
+                  {% endif %}
+                  <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-primary">Parier</a>
+                </div>
               </div>
             {% endfor %}
           </div>
@@ -158,7 +162,9 @@
                     <span class="team-name">{{ match.away_team.name }}</span>
                   </div>
                 </div>
-                <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-secondary">Voir détails</a>
+                <div class="match-bottom">
+                  <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-secondary">Voir détails</a>
+                </div>
               </div>
             {% endfor %}
           </div>
@@ -198,7 +204,9 @@
                 <span class="team-name">{{ match.away_team.name }}</span>
               </div>
             </div>
-            <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-secondary">Voir détails</a>
+            <div class="match-bottom">
+              <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-secondary">Voir détails</a>
+            </div>
           </div>
         {% endfor %}
       </div>
@@ -239,7 +247,9 @@
                     <span class="team-name">{{ match.away_team.name }}</span>
                   </div>
                 </div>
-                <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-secondary">Voir détails</a>
+                <div class="match-bottom">
+                  <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-secondary">Voir détails</a>
+                </div>
               </div>
             {% endfor %}
           </div>
@@ -287,17 +297,27 @@
   border-radius: 12px;
 }
 
+.match-card {
+  background-color: #f8f9fa;
+  border-radius: var(--border-radius);
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+}
+
 .match-card.in-progress {
   background-color: rgba(255, 193, 7, 0.1);
+}
+
+.match-card.completed {
+  background-color: rgba(46, 204, 113, 0.1);
 }
 
 .match-card.in-progress .match-status {
   background-color: var(--warning-color);
   color: #000;
-}
-
-.match-card.completed {
-  background-color: rgba(46, 204, 113, 0.1);
 }
 
 .match-card.completed .match-status {
@@ -368,6 +388,32 @@
     outline: none;
     border-color: var(--secondary-color);
     box-shadow: 0 0 0 2px rgba(var(--secondary-color-rgb), 0.1);
+}
+
+.match-header {
+  flex-shrink: 0;
+}
+
+.match-teams {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.match-bottom {
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.match-odds {
+  margin-bottom: 15px;
+}
+
+.match-card .btn {
+  width: 100%;
+  text-align: center;
 }
 </style>
 {% endblock %} 
