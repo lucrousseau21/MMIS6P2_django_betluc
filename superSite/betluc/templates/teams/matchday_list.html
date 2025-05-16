@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Journées de {{ league.name }} - BetLuc{% endblock %}
+
+{% block content %}
+<div class="matchday-list-container">
+  <h2>Journées de {{ league.name }}</h2>
+  
+  <div class="actions">
+    <a href="{% url 'teams:league_teams' league.id %}" class="btn btn-secondary">Équipes</a>
+    <a href="{% url 'teams:league_matches' league.id %}" class="btn btn-secondary">Matchs</a>
+  </div>
+  
+  {% if matchdays %}
+    <div class="matchdays-grid">
+      {% for matchday in matchdays %}
+        <div class="matchday-card {% if matchday.is_completed %}completed{% endif %}">
+          <h3>Journée {{ matchday.number }}</h3>
+          <p class="matchday-date">{{ matchday.date|date:"d/m/Y" }}</p>
+          {% if matchday.is_completed %}
+            <span class="status completed">Terminée</span>
+          {% else %}
+            <span class="status pending">À venir</span>
+          {% endif %}
+          <a href="{% url 'teams:matchday_detail' matchday.id %}" class="btn btn-primary">Voir les matchs</a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>Aucune journée n'est disponible pour cette ligue.</p>
+  {% endif %}
+</div>
+{% endblock %} 

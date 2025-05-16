@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil - BetLuc{% endblock %}
+
+{% block content %}
+<div class="home-container">
+  <section class="hero">
+    <h2>Bienvenue sur BetLuc</h2>
+    <p>La plateforme de paris sportifs en ligne la plus fiable.</p>
+    {% if not user.is_authenticated %}
+      <div class="cta-buttons">
+        <a href="{% url 'accounts:register' %}" class="btn btn-primary">S'inscrire</a>
+        <a href="{% url 'accounts:login' %}" class="btn btn-secondary">Se connecter</a>
+      </div>
+    {% endif %}
+  </section>
+
+  <section class="features">
+    <h3>Nos fonctionnalités</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>Paris variés</h4>
+        <p>Pariez sur une multitude d'événements sportifs.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Cotes avantageuses</h4>
+        <p>Bénéficiez des meilleures cotes du marché.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Paiements sécurisés</h4>
+        <p>Vos transactions sont 100% sécurisées.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="upcoming-events">
+    <h3>Explorer les compétitions</h3>
+    <div class="explore-links">
+      <a href="{% url 'teams:league_list' %}" class="btn btn-primary">Toutes les ligues</a>
+      <a href="{% url 'teams:team_list' %}" class="btn btn-secondary">Toutes les équipes</a>
+    </div>
+  </section>
+</div>
+{% endblock %} 

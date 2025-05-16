@@ -1,0 +1,389 @@
+{% extends "base.html" %}
+
+{% block title %}Mon Profil - BetLuc{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+  <h2>Profil de {{ user.username }}</h2>
+  
+  <div class="profile-info">
+    <p><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Solde actuel:</strong> {{ user.balance|floatformat:2 }} €</p>
+  </div>
+  
+  <div class="profile-actions">
+    <h3>Actions</h3>
+    <div class="action-buttons">
+      <button onclick="openDepositModal()" class="btn btn-primary">Déposer de l'argent</button>
+      <button onclick="openWithdrawModal()" class="btn btn-secondary">Retirer de l'argent</button>
+      <a href="{% url 'teams:my_bets' %}" class="btn btn-secondary">Historique des paris</a>
+    </div>
+  </div>
+  
+  <div class="recent-bets">
+    <h3>Paris récents</h3>
+    {% if user.bets.all %}
+        <div class="recent-bets">
+            {% for bet in user.bets.all|slice:":3" %}
+                <a href="{% url 'teams:match_detail' bet.match.id %}" class="bet-card-link">
+                    <div class="bet-card">
+                        <div class="bet-header">
+                            <span class="match-date">{{ bet.match.date|date:"d/m/Y H:i" }}</span>
+                            <span class="bet-status {% if bet.status == 'won' %}won{% elif bet.status == 'lost' %}lost{% else %}pending{% endif %}">
+                                {{ bet.get_status_display }}
+                            </span>
+                        </div>
+                        <div class="bet-match">
+                            {{ bet.match.home_team }} vs {{ bet.match.away_team }}
+                        </div>
+                        <div class="bet-details">
+                            <span class="bet-type">{{ bet.get_bet_type_display }}</span>
+                            <span class="bet-amount">{{ bet.amount|floatformat:2 }}€</span>
+                            <span class="bet-odds">Cote: {{ bet.odds }}</span>
+                        </div>
+                        {% if bet.status == 'won' %}
+                            <div class="bet-winnings">
+                                Gains: {{ bet.potential_win|floatformat:2 }}€
+                            </div>
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Vous n'avez pas encore de paris.</p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Modal pour le dépôt d'argent -->
+<div id="depositModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Déposer de l'argent</h2>
+            <span class="close" onclick="closeDepositModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="depositForm" method="POST" action="{% url 'accounts:deposit' %}">
+                {% csrf_token %}
+                <div class="card-details">
+                    <div class="card-number">
+                        <label>Numéro de carte</label>
+                        <input type="text" value="4242 4242 4242 4242" readonly>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-date">
+                            <label>Date d'expiration</label>
+                            <input type="text" value="12/25" readonly>
+                        </div>
+                        <div class="card-cvv">
+                            <label>CVV</label>
+                            <input type="text" value="123" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="deposit-amount">
+                    <label for="amount">Montant à déposer (€)</label>
+                    <input type="number" id="amount" name="amount" min="10" max="1000" step="10" required>
+                    <div class="amount-suggestions">
+                        <button type="button" onclick="setAmount(50)">50€</button>
+                        <button type="button" onclick="setAmount(100)">100€</button>
+                        <button type="button" onclick="setAmount(200)">200€</button>
+                        <button type="button" onclick="setAmount(500)">500€</button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-deposit">Confirmer le dépôt</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour le retrait d'argent -->
+<div id="withdrawModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Retirer de l'argent</h2>
+            <span class="close" onclick="closeWithdrawModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="withdrawForm" method="POST" action="{% url 'accounts:withdraw' %}">
+                {% csrf_token %}
+                <div class="card-details">
+                    <div class="card-number">
+                        <label>IBAN</label>
+                        <input type="text" value="FR76 XXXX XXXX XXXX XXXX XXXX XXX" readonly>
+                    </div>
+                    <div class="card-info">
+                        <div class="card-date">
+                            <label>Titulaire</label>
+                            <input type="text" value="{{ user.username }}" readonly>
+                        </div>
+                        <div class="card-cvv">
+                            <label>BIC</label>
+                            <input type="text" value="BNPAFRPPXXX" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="deposit-amount">
+                    <label for="withdraw-amount">Montant à retirer (€)</label>
+                    <input type="number" id="withdraw-amount" name="amount" min="10" max="1000" step="10" required>
+                    <div class="amount-suggestions">
+                        <button type="button" onclick="setWithdrawAmount(50)">50€</button>
+                        <button type="button" onclick="setWithdrawAmount(100)">100€</button>
+                        <button type="button" onclick="setWithdrawAmount(200)">200€</button>
+                        <button type="button" onclick="setWithdrawAmount(500)">500€</button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-deposit">Confirmer le retrait</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .recent-bets {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .bet-card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .bet-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .bet-status {
+        font-weight: bold;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+    }
+    
+    .bet-status.won {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .bet-status.lost {
+        background-color: #dc3545;
+        color: white;
+    }
+    
+    .bet-status.pending {
+        background-color: #ffc107;
+        color: black;
+    }
+    
+    .bet-match {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    
+    .bet-details {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.9rem;
+        color: #666;
+    }
+    
+    .bet-winnings {
+        margin-top: 0.5rem;
+        color: #28a745;
+        font-weight: bold;
+    }
+    
+    .bet-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: transform 0.2s ease;
+    }
+    
+    .bet-card-link:hover {
+        transform: translateY(-2px);
+        text-decoration: none;
+    }
+    
+    .bet-card-link:hover .bet-card {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Styles pour la modal */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 0;
+        width: 90%;
+        max-width: 500px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .modal-header {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    .close {
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+        color: #666;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .card-details {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-number input,
+    .card-info input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #f1f1f1;
+        color: #666;
+        font-family: monospace;
+    }
+
+    .card-info {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .card-date, .card-cvv {
+        flex: 1;
+    }
+
+    .deposit-amount {
+        margin-bottom: 1.5rem;
+    }
+
+    .deposit-amount input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-top: 0.5rem;
+    }
+
+    .amount-suggestions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .amount-suggestions button {
+        flex: 1;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: #fff;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .amount-suggestions button:hover {
+        background: #f0f0f0;
+        border-color: #999;
+    }
+
+    .btn-deposit {
+        width: 100%;
+        padding: 1rem;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .btn-deposit:hover {
+        background: #218838;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #333;
+        font-weight: 500;
+    }
+</style>
+
+<script>
+    function openDepositModal() {
+        document.getElementById('depositModal').style.display = 'block';
+    }
+
+    function closeDepositModal() {
+        document.getElementById('depositModal').style.display = 'none';
+    }
+
+    function setAmount(amount) {
+        document.getElementById('amount').value = amount;
+    }
+
+    function openWithdrawModal() {
+        document.getElementById('withdrawModal').style.display = 'block';
+    }
+
+    function closeWithdrawModal() {
+        document.getElementById('withdrawModal').style.display = 'none';
+    }
+
+    function setWithdrawAmount(amount) {
+        document.getElementById('withdraw-amount').value = amount;
+    }
+
+    // Fermer la modal si on clique en dehors
+    window.onclick = function(event) {
+        var depositModal = document.getElementById('depositModal');
+        var withdrawModal = document.getElementById('withdrawModal');
+        if (event.target == depositModal) {
+            closeDepositModal();
+        }
+        if (event.target == withdrawModal) {
+            closeWithdrawModal();
+        }
+    }
+</script>
+{% endblock %} 

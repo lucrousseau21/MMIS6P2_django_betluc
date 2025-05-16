@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Ligues - BetLuc{% endblock %}
+
+{% block content %}
+<div class="league-list-container">
+  <h2>Toutes les ligues</h2>
+  
+  {% if leagues %}
+    <div class="leagues-grid">
+      {% for league in leagues %}
+        <div class="league-card">
+          <h3>{{ league.name }}</h3>
+          <p>Pays: {{ league.country }}</p>
+          {% if league.logo %}
+            <img src="{{ league.logo.url }}" alt="{{ league.name }}" class="league-logo">
+          {% endif %}
+          <a href="{% url 'teams:league_teams' league.id %}" class="btn btn-primary">Voir les équipes</a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>Aucune ligue n'est disponible pour le moment.</p>
+  {% endif %}
+</div>
+{% endblock %} 

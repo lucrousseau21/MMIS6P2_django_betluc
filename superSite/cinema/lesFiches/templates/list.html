@@ -1,0 +1,11 @@
+<h1>Liste des fiches de film</h1>
+{% for film in films %}
+<h2><strong>Titre : </strong>{{ film.titre }}</h2>
+<ul>
+  <li><strong>Date de sortie : </strong>{{ film.date_sortie }}</li>
+  <li><strong>Réalisateur : </strong>{{ film.realisateur }}</li>
+  <li><strong>Acteur principal : </strong>{{ film.act_prin }}</li>
+  <li><strong>Avis : </strong>{{ film.avis }}</li>
+  <li><strong>Note : </strong>{{ film.note }}</li>
+</ul>
+{% endfor %}

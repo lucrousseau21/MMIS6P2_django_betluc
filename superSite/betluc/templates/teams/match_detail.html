@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{ match.home_team }} vs {{ match.away_team }}
+{% endblock %}
+
+{% block content %}
+<div class="match-details">
+  <div class="match-header">
+    <h2>{{ match.home_team }} vs {{ match.away_team }}</h2>
+    <p class="match-date">{{ match.date|date:"d F Y H:i" }}</p>
+    {% if match.stadium %}
+      <p class="match-stadium">{{ match.stadium }}</p>
+    {% endif %}
+  </div>
+
+  <div class="match-status">
+    <span class="status-badge {{ match.status }}">{{ match.get_status_display }}</span>
+  </div>
+
+  {% if match.status == 'completed' %}
+    <div class="match-result">
+      <div class="team {% if match.result == 'home_win' %}winner{% endif %}">
+        {{ match.home_team }}
+        <span class="score">{{ match.home_score }}</span>
+      </div>
+      <div class="team {% if match.result == 'draw' %}winner{% endif %}">
+        <span class="result-text">
+          {% if match.result == 'home_win' %}
+            Victoire domicile
+          {% elif match.result == 'away_win' %}
+            Victoire extérieur
+          {% elif match.result == 'draw' %}
+            Match nul
+          {% endif %}
+        </span>
+      </div>
+      <div class="team {% if match.result == 'away_win' %}winner{% endif %}">
+        {{ match.away_team }}
+        <span class="score">{{ match.away_score }}</span>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if user.is_authenticated %}
+    {% if user_bet %}
+      <div class="user-bet">
+        <h3>Votre pari</h3>
+        <p>Type : {{ user_bet.get_bet_type_display }}</p>
+        <p>Montant : {{ user_bet.amount|floatformat:2 }}€</p>
+        <p>Cote : {{ user_bet.odds }}</p>
+        <p>Gain potentiel : {{ user_bet.potential_win|floatformat:2 }}€</p>
+        <p>Statut : {{ user_bet.get_status_display }}</p>
+      </div>
+    {% elif can_bet %}
+      <div class="bet-form">
+        <h3>Placer un pari</h3>
+        <form method="post">
+          {% csrf_token %}
+          <div class="odds-display">
+            <div class="odd">
+              <label>
+                <input type="radio" name="bet_type" value="home_win" required>
+                Victoire {{ match.home_team }}
+                <span class="odd-value">{{ odds.home_win }}</span>
+              </label>
+            </div>
+            <div class="odd">
+              <label>
+                <input type="radio" name="bet_type" value="draw" required>
+                Match nul
+                <span class="odd-value">{{ odds.draw }}</span>
+              </label>
+            </div>
+            <div class="odd">
+              <label>
+                <input type="radio" name="bet_type" value="away_win" required>
+                Victoire {{ match.away_team }}
+                <span class="odd-value">{{ odds.away_win }}</span>
+              </label>
+            </div>
+          </div>
+          <div class="amount-input">
+            {{ form.amount.label_tag }}
+            {{ form.amount }}
+            {% if form.amount.errors %}
+              <div class="error-message">{{ form.amount.errors }}</div>
+            {% endif %}
+          </div>
+          <button type="submit" class="btn btn-primary">Placer le pari</button>
+        </form>
+      </div>
+    {% else %}
+      <div class="bet-closed">
+        <p>Les paris ne sont plus possibles pour ce match.</p>
+      </div>
+    {% endif %}
+  {% else %}
+    <div class="login-required">
+      <p>Connectez-vous pour pouvoir parier sur ce match.</p>
+      <a href="{% url 'login' %}" class="btn btn-primary">Se connecter</a>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+.match-details {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.match-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.match-date, .match-stadium {
+  color: var(--text-color);
+  margin: 5px 0;
+}
+
+.match-status {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.status-badge {
+  padding: 5px 15px;
+  border-radius: 15px;
+  font-size: 0.9em;
+}
+
+.status-badge.scheduled {
+  background-color: var(--info-color);
+  color: white;
+}
+
+.status-badge.live {
+  background-color: var(--warning-color);
+  color: black;
+}
+
+.status-badge.completed {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.match-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+  padding: 20px;
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+}
+
+.team {
+  text-align: center;
+  flex: 1;
+}
+
+.team.winner {
+  font-weight: bold;
+  color: var(--success-color);
+}
+
+.score {
+  display: block;
+  font-size: 1.5em;
+  margin-top: 5px;
+}
+
+.bet-form {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+}
+
+.odds-display {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.odd {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+}
+
+.odd label {
+  display: block;
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: all 0.3s ease;
+}
+
+.odd label:hover {
+  background-color: var(--hover-color);
+}
+
+.odd input[type="radio"] {
+  margin-right: 5px;
+}
+
+.odd-value {
+  display: block;
+  font-weight: bold;
+  color: var(--secondary-color);
+  margin-top: 5px;
+}
+
+.amount-input {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.amount-input input {
+  width: 100px;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+
+.error-message {
+  color: var(--danger-color);
+  margin-top: 5px;
+  font-size: 0.9em;
+}
+
+.user-bet {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+
+.user-bet p {
+  margin: 5px 0;
+}
+
+.bet-closed, .login-required {
+  margin-top: 30px;
+  text-align: center;
+  padding: 20px;
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+}
+
+.login-required .btn {
+  margin-top: 10px;
+}
+
+.result-text {
+  display: block;
+  font-size: 0.9em;
+  margin-top: 5px;
+  color: var(--success-color);
+  font-weight: bold;
+}
+</style>
+{% endblock %} 

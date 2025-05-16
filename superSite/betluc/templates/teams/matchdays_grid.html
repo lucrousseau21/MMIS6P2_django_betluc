@@ -1,0 +1,331 @@
+{% extends 'base.html' %}
+
+{% block title %}Toutes les journées - BetLuc{% endblock %}
+
+{% block content %}
+<div class="matchday-list-container">
+    <div class="page-header">
+        <h2>Toutes les journées</h2>
+        <div class="league-selector">
+            <select id="league-select" onchange="filterLeagues(this.value)">
+                <option value="all">Toutes les ligues</option>
+                {% for league_data in leagues_data %}
+                    <option value="{{ league_data.league.id }}">{{ league_data.league.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    
+    {% for league_data in leagues_data %}
+    <div class="league-section" id="league-{{ league_data.league.id }}">
+        <div class="league-header">
+            <h3>{{ league_data.league.name }}</h3>
+            <div class="search-container">
+                <button class="btn btn-secondary current-matchday-btn" onclick="showCurrentMatchday('{{ league_data.league.id }}')">
+                    Journée actuelle
+                </button>
+                <div class="separator"></div>
+                <label for="search-{{ league_data.league.id }}">Journée:</label>
+                <input type="number" 
+                       id="search-{{ league_data.league.id }}" 
+                       class="matchday-search" 
+                       min="1" 
+                       max="{{ league_data.max_matchday }}"
+                       placeholder="1-{{ league_data.max_matchday }}"
+                       oninput="filterMatchdays(this, '{{ league_data.league.id }}')">
+            </div>
+        </div>
+        <div class="matchdays-grid" id="grid-{{ league_data.league.id }}">
+            {% for matchday in league_data.matchdays %}
+            <div class="matchday-card {% if matchday.is_completed %}completed{% elif matchday.date <= now %}in-progress{% else %}upcoming{% endif %}" 
+                 data-matchday="{{ matchday.number }}">
+                <div class="matchday-header">
+                    <span class="matchday-number">Journée {{ matchday.number }}</span>
+                    <span class="status {% if matchday.is_completed %}completed{% elif matchday.date <= now %}pending{% endif %}">
+                        {% if matchday.is_completed %}
+                            Terminée
+                        {% elif matchday.date <= now %}
+                            En cours
+                        {% else %}
+                            À venir
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="matchday-content">
+                    <div class="matchday-date">
+                        {{ matchday.date|date:"d F Y" }}
+                    </div>
+                    <div class="matchday-matches">
+                        {{ matchday.matches_count }} match{{ matchday.matches_count|pluralize:"es" }}
+                    </div>
+                    <a href="{% url 'teams:matchday_detail' matchday.id %}" class="btn btn-primary">
+                        Voir les matchs
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+.league-section {
+    margin-bottom: 40px;
+}
+
+.league-section h3 {
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--light-color);
+}
+
+.matchday-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.matchday-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.matchday-header {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.matchday-number {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.matchday-content {
+    padding: 15px;
+}
+
+.matchday-date {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--secondary-color);
+}
+
+.matchday-matches {
+    color: var(--text-color);
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.matchday-card .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.matchday-card.completed {
+    border-left: 4px solid var(--success-color);
+}
+
+.matchday-card.in-progress {
+    border-left: 4px solid var(--warning-color);
+}
+
+.matchday-card.upcoming {
+    border-left: 4px solid var(--primary-color);
+}
+
+.status {
+    font-size: 0.9em;
+    padding: 4px 8px;
+    border-radius: 12px;
+    background-color: rgba(255,255,255,0.2);
+}
+
+.status.completed {
+    background-color: var(--success-color);
+}
+
+.status.pending {
+    background-color: var(--warning-color);
+}
+
+.matchdays-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+    .matchdays-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .matchdays-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.league-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--light-color);
+}
+
+.league-header h3 {
+    color: var(--secondary-color);
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.separator {
+    width: 1px;
+    height: 24px;
+    background-color: var(--light-color);
+    margin: 0 5px;
+}
+
+.search-container label {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.matchday-search {
+    width: 80px;
+    padding: 5px 10px;
+    border: 1px solid var(--light-color);
+    border-radius: var(--border-radius);
+    font-size: 0.9em;
+}
+
+.matchday-search:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(var(--secondary-color-rgb), 0.1);
+}
+
+.current-matchday-btn {
+    padding: 5px 10px;
+    font-size: 0.9em;
+    white-space: nowrap;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: inline-block;
+    line-height: 1.5;
+    height: 32px;
+    box-sizing: border-box;
+}
+
+.current-matchday-btn:hover {
+    background-color: var(--primary-color);
+    text-decoration: none;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.league-selector select {
+    padding: 8px 12px;
+    border: 1px solid var(--light-color);
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    background-color: white;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.league-selector select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(var(--secondary-color-rgb), 0.1);
+}
+</style>
+
+<script>
+function filterMatchdays(input, leagueId) {
+    const grid = document.getElementById(`grid-${leagueId}`);
+    const cards = grid.getElementsByClassName('matchday-card');
+    const searchValue = input.value;
+
+    for (let card of cards) {
+        const matchdayNumber = card.getAttribute('data-matchday');
+        if (!searchValue || matchdayNumber === searchValue) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    }
+}
+
+function showCurrentMatchday(leagueId) {
+    const grid = document.getElementById(`grid-${leagueId}`);
+    const cards = grid.getElementsByClassName('matchday-card');
+    let currentMatchday = null;
+
+    // Trouver la journée en cours
+    for (let card of cards) {
+        if (card.classList.contains('in-progress')) {
+            currentMatchday = card.getAttribute('data-matchday');
+            break;
+        }
+    }
+
+    // Si aucune journée en cours, trouver la prochaine journée
+    if (!currentMatchday) {
+        for (let card of cards) {
+            if (card.classList.contains('upcoming')) {
+                currentMatchday = card.getAttribute('data-matchday');
+                break;
+            }
+        }
+    }
+
+    // Mettre à jour l'input et filtrer
+    const input = document.getElementById(`search-${leagueId}`);
+    if (currentMatchday) {
+        input.value = currentMatchday;
+        filterMatchdays(input, leagueId);
+    }
+}
+
+function filterLeagues(leagueId) {
+    const sections = document.getElementsByClassName('league-section');
+    
+    for (let section of sections) {
+        if (leagueId === 'all' || section.id === `league-${leagueId}`) {
+            section.style.display = '';
+        } else {
+            section.style.display = 'none';
+        }
+    }
+}
+</script>
+{% endblock %} 

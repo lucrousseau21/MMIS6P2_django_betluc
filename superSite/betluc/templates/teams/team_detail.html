@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ team.name }} - BetLuc{% endblock %}
+
+{% block content %}
+<div class="team-detail-container">
+  <div class="team-header">
+    <h2>{{ team.name }}</h2>
+    {% if team.logo %}
+      <img src="{{ team.logo.url }}" alt="{{ team.name }}" class="team-logo-large">
+    {% endif %}
+  </div>
+  
+  <div class="team-info">
+    <div class="info-card">
+      <h3>Informations générales</h3>
+      <p><strong>Ville:</strong> {{ team.city }}</p>
+      <p><strong>Stade:</strong> {{ team.stadium }}</p>
+      <p><strong>Ligue:</strong> {{ team.league.name }}</p>
+      {% if team.founded_year %}
+        <p><strong>Année de fondation:</strong> {{ team.founded_year }}</p>
+      {% endif %}
+    </div>
+    
+    <div class="team-actions">
+      <a href="{% url 'teams:league_teams' team.league.id %}" class="btn btn-secondary">Autres équipes de {{ team.league.name }}</a>
+      <a href="{% url 'teams:team_list' %}" class="btn btn-secondary">Toutes les équipes</a>
+    </div>
+  </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %} Ajouter un film {% endblock %}
+{% block content %}
+<h2>Premier formulaire </h2>
+<form method="POST" class="form" action="#">
+    {% csrf_token %}
+{{ avis_form.as_p }}
+<button type="submit">Submit </ button >
+</form >
+{% endblock %}

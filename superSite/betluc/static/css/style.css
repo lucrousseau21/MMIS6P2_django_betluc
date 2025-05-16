@@ -1,0 +1,936 @@
+/* Variables */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2c3e50;
+  --accent-color: #e74c3c;
+  --light-color: #ecf0f1;
+  --dark-color: #2c3e50;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --error-color: #e74c3c;
+  --grey-color: #95a5a6;
+  --border-radius: 5px;
+  --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset et bases */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  color: var(--dark-color);
+  background-color: #f9f9f9;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Layout */
+header, main, footer {
+  width: 100%;
+  padding: 20px;
+}
+
+header {
+  background-color: var(--secondary-color);
+  color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+main {
+  min-height: calc(100vh - 180px);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+footer {
+  background-color: var(--secondary-color);
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Navigation */
+header h1 {
+  margin-bottom: 15px;
+}
+
+nav ul {
+  display: flex;
+  gap: 20px;
+}
+
+nav ul li a {
+  color: white;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+nav ul li a:hover {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+/* Messages */
+.messages {
+  margin: 20px 0;
+}
+
+.message {
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  margin-bottom: 10px;
+}
+
+.success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.error {
+  background-color: var(--error-color);
+  color: white;
+}
+
+/* Boutons */
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn:hover {
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #34495e;
+}
+
+/* Page d'accueil */
+.home-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.hero {
+  text-align: center;
+  padding: 50px 20px;
+  margin-bottom: 40px;
+  border-radius: var(--border-radius);
+  background-color: white;
+  box-shadow: var(--box-shadow);
+}
+
+.hero h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: var(--secondary-color);
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: var(--grey-color);
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.features, .upcoming-events {
+  margin-bottom: 40px;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  background-color: white;
+  box-shadow: var(--box-shadow);
+}
+
+.features h3, .upcoming-events h3 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--secondary-color);
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.feature-card {
+  padding: 20px;
+  border-radius: var(--border-radius);
+  background-color: var(--light-color);
+  text-align: center;
+}
+
+.feature-card h4 {
+  margin-bottom: 10px;
+  color: var(--secondary-color);
+}
+
+.explore-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Formulaires d'authentification */
+.auth-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  background-color: white;
+  box-shadow: var(--box-shadow);
+}
+
+.auth-form h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--secondary-color);
+}
+
+.auth-form form {
+  margin-bottom: 20px;
+}
+
+.auth-form p {
+  margin-bottom: 15px;
+}
+
+.auth-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+}
+
+.auth-form ul.errorlist {
+  color: var(--error-color);
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.auth-form button {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Page de profil */
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  background-color: white;
+  box-shadow: var(--box-shadow);
+}
+
+.profile-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--secondary-color);
+}
+
+.profile-info {
+  padding: 20px;
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+  margin-bottom: 30px;
+}
+
+.profile-info p {
+  margin-bottom: 10px;
+}
+
+.profile-actions, .recent-bets {
+  margin-bottom: 30px;
+}
+
+.profile-actions h3, .recent-bets h3 {
+  margin-bottom: 20px;
+  color: var(--secondary-color);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Styles pour les équipes et ligues */
+.league-list-container,
+.team-list-container,
+.team-detail-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.league-list-container h2,
+.team-list-container h2,
+.team-detail-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--secondary-color);
+}
+
+.leagues-grid,
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.league-card,
+.team-card {
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.league-card:hover,
+.team-card:hover {
+  transform: translateY(-5px);
+}
+
+.league-card h3,
+.team-card h3 {
+  margin-bottom: 15px;
+  color: var(--secondary-color);
+}
+
+.league-logo,
+.team-logo {
+  max-width: 100%;
+  height: auto;
+  max-height: 80px;
+  display: block;
+  margin: 15px auto;
+  border-radius: var(--border-radius);
+}
+
+.team-logo-large {
+  max-width: 100%;
+  height: auto;
+  max-height: 200px;
+  display: block;
+  margin: 0 auto 20px;
+  border-radius: var(--border-radius);
+}
+
+.league-card p,
+.team-card p {
+  margin-bottom: 10px;
+}
+
+.league-card .btn,
+.team-card .btn {
+  margin-top: 15px;
+  width: 100%;
+}
+
+.team-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.team-info {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.info-card {
+  background-color: var(--light-color);
+  padding: 20px;
+  border-radius: var(--border-radius);
+}
+
+.info-card h3 {
+  margin-bottom: 15px;
+  color: var(--secondary-color);
+}
+
+.team-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+  .team-info {
+    grid-template-columns: 2fr 1fr;
+  }
+  
+  .team-actions {
+    align-self: start;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+  
+  .leagues-grid,
+  .teams-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .explore-links {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .explore-links .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* Styles pour les matchs et journées */
+.match-list-container,
+.matchday-list-container,
+.matchday-detail-container,
+.match-detail-container,
+.user-bets-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.matches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.match-card {
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.match-card:hover {
+  transform: translateY(-5px);
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--grey-color);
+  margin-bottom: 15px;
+}
+
+.match-teams {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 40%;
+}
+
+.vs {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.team-name {
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.team-logo-small {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.team-logo-medium {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.match-odds {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.odd {
+  text-align: center;
+  background-color: white;
+  padding: 10px;
+  border-radius: var(--border-radius);
+  width: 30%;
+}
+
+.odd-type {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.odd-value {
+  font-size: 1.1rem;
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+.odd-label {
+  font-size: 0.8rem;
+  color: var(--grey-color);
+  margin-top: 5px;
+}
+
+.score {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 0 10px;
+}
+
+/* Journées */
+.matchdays-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.matchday-card {
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.matchday-card.completed {
+  background-color: rgba(46, 204, 113, 0.1);
+}
+
+.matchday-card h3 {
+  margin-bottom: 10px;
+}
+
+.matchday-date {
+  color: var(--grey-color);
+  margin-bottom: 15px;
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-bottom: 15px;
+}
+
+.status.completed {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.status.pending {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+/* Match detail */
+.teams-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px 0;
+}
+
+.match-center {
+  text-align: center;
+}
+
+.vs-container {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.final-score {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.result {
+  display: block;
+  margin-top: 10px;
+  color: var(--grey-color);
+}
+
+.betting-container {
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin: 30px 0;
+}
+
+.odds-display {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.odd-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 15px;
+  width: 30%;
+  text-align: center;
+  transition: transform 0.3s;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.odd-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.bet-form-container {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.bet-type-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bet-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  margin-bottom: 5px;
+}
+
+.user-bet-info {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.login-prompt {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.navigation-links {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+/* Match list in matchday detail */
+.matches-list {
+  margin-top: 30px;
+}
+
+.match-row {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr 1fr;
+  gap: 10px;
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.match-row.completed {
+  background-color: rgba(46, 204, 113, 0.1);
+}
+
+.match-row .match-teams {
+  margin-bottom: 0;
+}
+
+/* User bets */
+.user-bets-container h2 {
+  margin-bottom: 20px;
+}
+
+.user-info {
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.bets-tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  border-bottom: 3px solid transparent;
+}
+
+.tab.active {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.bets-content {
+  display: none;
+}
+
+.bets-content.active {
+  display: block;
+}
+
+.bets-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.bets-table th,
+.bets-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.bets-table th {
+  background-color: var(--light-color);
+  font-weight: bold;
+}
+
+.bet-won {
+  background-color: rgba(46, 204, 113, 0.1);
+}
+
+.bet-lost {
+  background-color: rgba(231, 76, 60, 0.1);
+}
+
+/* Actions pour groupes de boutons */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .teams-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .match-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .odds-display {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .odd-card {
+    width: 100%;
+  }
+  
+  .bets-table {
+    font-size: 0.9rem;
+  }
+  
+  .bets-table th,
+  .bets-table td {
+    padding: 8px;
+  }
+  
+  /* Pour les tables de paris sur mobile, utilisez un affichage vertical */
+  .bets-table thead {
+    display: none;
+  }
+  
+  .bets-table tr {
+    display: block;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+  }
+  
+  .bets-table td {
+    display: block;
+    text-align: right;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+  }
+  
+  .bets-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    font-weight: bold;
+  }
+}
+
+/* Couleurs primaires */
+.bg-primary {
+    background-color: #2563eb; /* Bleu */
+}
+
+.text-primary {
+    color: #2563eb;
+}
+
+.bg-primary-dark {
+    background-color: #1d4ed8; /* Bleu plus foncé pour le hover */
+}
+
+/* Couleurs de fond pour les statuts */
+.bg-green-100 {
+    background-color: #dcfce7;
+}
+
+.text-green-800 {
+    color: #166534;
+}
+
+.bg-yellow-100 {
+    background-color: #fef9c3;
+}
+
+.text-yellow-800 {
+    color: #854d0e;
+}
+
+.bg-blue-100 {
+    background-color: #dbeafe;
+}
+
+.text-blue-800 {
+    color: #1e40af;
+}
+
+/* Transitions */
+.transition-colors {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+} 

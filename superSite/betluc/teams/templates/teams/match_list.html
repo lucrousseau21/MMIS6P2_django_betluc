@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Matchs</h1>
+
+    <!-- Sélection de la ligue -->
+    <div class="mb-4">
+        <form method="get" class="form-inline">
+            <select name="league" class="form-control mr-2" onchange="this.form.submit()">
+                <option value="">Toutes les ligues</option>
+                {% for l in leagues %}
+                <option value="{{ l.id }}" {% if league and league.id == l.id %}selected{% endif %}>
+                    {{ l.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    {% if next_matchday %}
+    <h2 class="mb-3">Journée {{ next_matchday.number }} - {{ next_matchday.date|date:"d/m/Y" }}</h2>
+
+    <!-- Matchs à venir -->
+    {% if upcoming_matches %}
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3 class="h5 mb-0">Matchs à venir</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for match in upcoming_matches %}
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-center flex-grow-1">
+                                    <h5 class="mb-1">{{ match.home_team.name }}</h5>
+                                    <small class="text-muted">vs</small>
+                                    <h5 class="mb-1">{{ match.away_team.name }}</h5>
+                                </div>
+                                <div class="text-center">
+                                    <p class="mb-0">{{ match.date|date:"H:i" }}</p>
+                                    <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-sm btn-outline-primary mt-2">Détails</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Matchs en cours -->
+    {% if in_progress_matches %}
+    <div class="card mb-4">
+        <div class="card-header bg-warning text-dark">
+            <h3 class="h5 mb-0">Matchs en cours</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for match in in_progress_matches %}
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-center flex-grow-1">
+                                    <h5 class="mb-1">{{ match.home_team.name }}</h5>
+                                    <h4 class="mb-1">{{ match.home_score }} - {{ match.away_score }}</h4>
+                                    <h5 class="mb-1">{{ match.away_team.name }}</h5>
+                                </div>
+                                <div class="text-center">
+                                    <span class="badge badge-warning">En cours</span>
+                                    <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-sm btn-outline-primary mt-2">Détails</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Matchs terminés de la journée -->
+    {% if completed_matches_current %}
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h3 class="h5 mb-0">Matchs terminés</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for match in completed_matches_current %}
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-center flex-grow-1">
+                                    <h5 class="mb-1">{{ match.home_team.name }}</h5>
+                                    <h4 class="mb-1">{{ match.home_score }} - {{ match.away_score }}</h4>
+                                    <h5 class="mb-1">{{ match.away_team.name }}</h5>
+                                </div>
+                                <div class="text-center">
+                                    <span class="badge badge-success">Terminé</span>
+                                    <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-sm btn-outline-primary mt-2">Détails</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="alert alert-info">
+        Aucun match n'est prévu pour le moment.
+    </div>
+    {% endif %}
+
+    <!-- Journées précédentes -->
+    {% if completed_matchdays_data %}
+    <h2 class="mb-3 mt-4">Journées précédentes</h2>
+    {% for data in completed_matchdays_data %}
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h3 class="h5 mb-0">Journée {{ data.matchday.number }} - {{ data.matchday.date|date:"d/m/Y" }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for match in data.matches %}
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-center flex-grow-1">
+                                    <h5 class="mb-1">{{ match.home_team.name }}</h5>
+                                    <h4 class="mb-1">{{ match.home_score }} - {{ match.away_score }}</h4>
+                                    <h5 class="mb-1">{{ match.away_team.name }}</h5>
+                                </div>
+                                <div class="text-center">
+                                    <span class="badge badge-success">Terminé</span>
+                                    <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-sm btn-outline-primary mt-2">Détails</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+{% endblock %} 

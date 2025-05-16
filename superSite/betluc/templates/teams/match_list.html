@@ -1,0 +1,373 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if league %}
+    {{ league.name }} - Matchs
+  {% else %}
+    Tous les matchs
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="match-list-container">
+  <div class="page-header">
+    <h2>
+      {% if league %}
+        {{ league.name }} - Matchs
+      {% else %}
+        Tous les matchs
+      {% endif %}
+    </h2>
+    <div class="league-selector">
+      <select id="league-select" onchange="window.location.href=this.value">
+        <option value="{% url 'teams:match_list' %}" {% if not league %}selected{% endif %}>Toutes les ligues</option>
+        {% for league_option in leagues %}
+          <option value="{% url 'teams:league_matches' league_option.id %}" {% if league and league.id == league_option.id %}selected{% endif %}>
+            {{ league_option.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  
+  {% if next_matchday %}
+    <div class="current-matchday">
+      <h3>Journée {{ next_matchday.number }} - {{ next_matchday.date|date:"d F Y" }}</h3>
+
+      {% if in_progress_matches %}
+        <div class="matches-section">
+          <h4>Matchs en cours</h4>
+          <div class="matches-grid">
+            {% for match in in_progress_matches %}
+              <div class="match-card in-progress">
+                <div class="match-header">
+                  <span class="match-date">{{ match.date|date:"d/m/Y H:i" }}</span>
+                  <span class="match-status">En cours</span>
+                </div>
+                <div class="match-teams">
+                  <div class="team">
+                    {% if match.home_team.logo and match.home_team.logo.url %}
+                      <img src="{{ match.home_team.logo.url }}" alt="{{ match.home_team.name }}" class="team-logo-small">
+                    {% else %}
+                      <div class="team-logo-placeholder">{{ match.home_team.name|make_list|first }}</div>
+                    {% endif %}
+                    <span class="team-name">{{ match.home_team.name }}</span>
+                  </div>
+                  <div class="score">
+                    {{ match.home_score }} - {{ match.away_score }}
+                  </div>
+                  <div class="team">
+                    {% if match.away_team.logo and match.away_team.logo.url %}
+                      <img src="{{ match.away_team.logo.url }}" alt="{{ match.away_team.name }}" class="team-logo-small">
+                    {% else %}
+                      <div class="team-logo-placeholder">{{ match.away_team.name|make_list|first }}</div>
+                    {% endif %}
+                    <span class="team-name">{{ match.away_team.name }}</span>
+                  </div>
+                </div>
+                <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-secondary">Suivre le match</a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if upcoming_matches %}
+        <div class="matches-section">
+          <h4>Matchs à venir</h4>
+          <div class="matches-grid">
+            {% for match in upcoming_matches %}
+              <div class="match-card">
+                <div class="match-header">
+                  <span class="match-date">{{ match.date|date:"d/m/Y H:i" }}</span>
+                  <span class="match-status">À venir</span>
+                </div>
+                <div class="match-teams">
+                  <div class="team">
+                    {% if match.home_team.logo and match.home_team.logo.url %}
+                      <img src="{{ match.home_team.logo.url }}" alt="{{ match.home_team.name }}" class="team-logo-small">
+                    {% else %}
+                      <div class="team-logo-placeholder">{{ match.home_team.name|make_list|first }}</div>
+                    {% endif %}
+                    <span class="team-name">{{ match.home_team.name }}</span>
+                  </div>
+                  <div class="vs">VS</div>
+                  <div class="team">
+                    {% if match.away_team.logo and match.away_team.logo.url %}
+                      <img src="{{ match.away_team.logo.url }}" alt="{{ match.away_team.name }}" class="team-logo-small">
+                    {% else %}
+                      <div class="team-logo-placeholder">{{ match.away_team.name|make_list|first }}</div>
+                    {% endif %}
+                    <span class="team-name">{{ match.away_team.name }}</span>
+                  </div>
+                </div>
+                {% if match.odds %}
+                  <div class="match-odds">
+                    <div class="odd">
+                      <div class="odd-type">1</div>
+                      <div class="odd-value">{{ match.odds.home_win }}</div>
+                      <div class="odd-label">Domicile</div>
+                    </div>
+                    <div class="odd">
+                      <div class="odd-type">X</div>
+                      <div class="odd-value">{{ match.odds.draw }}</div>
+                      <div class="odd-label">Nul</div>
+                    </div>
+                    <div class="odd">
+                      <div class="odd-type">2</div>
+                      <div class="odd-value">{{ match.odds.away_win }}</div>
+                      <div class="odd-label">Extérieur</div>
+                    </div>
+                  </div>
+                {% endif %}
+                <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-primary">Parier</a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if completed_matches_current %}
+        <div class="matches-section">
+          <h4>Matchs terminés</h4>
+          <div class="matches-grid">
+            {% for match in completed_matches_current %}
+              <div class="match-card completed">
+                <div class="match-header">
+                  <span class="match-date">{{ match.date|date:"d/m/Y H:i" }}</span>
+                  <span class="match-status">Terminé</span>
+                </div>
+                <div class="match-teams">
+                  <div class="team">
+                    {% if match.home_team.logo and match.home_team.logo.url %}
+                      <img src="{{ match.home_team.logo.url }}" alt="{{ match.home_team.name }}" class="team-logo-small">
+                    {% else %}
+                      <div class="team-logo-placeholder">{{ match.home_team.name|make_list|first }}</div>
+                    {% endif %}
+                    <span class="team-name">{{ match.home_team.name }}</span>
+                  </div>
+                  <div class="score">
+                    {{ match.home_score }} - {{ match.away_score }}
+                  </div>
+                  <div class="team">
+                    {% if match.away_team.logo and match.away_team.logo.url %}
+                      <img src="{{ match.away_team.logo.url }}" alt="{{ match.away_team.name }}" class="team-logo-small">
+                    {% else %}
+                      <div class="team-logo-placeholder">{{ match.away_team.name|make_list|first }}</div>
+                    {% endif %}
+                    <span class="team-name">{{ match.away_team.name }}</span>
+                  </div>
+                </div>
+                <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-secondary">Voir détails</a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+  
+  {% if recent_matches %}
+    <div class="recent-matches">
+      <h3>Derniers résultats</h3>
+      <div class="matches-grid">
+        {% for match in recent_matches %}
+          <div class="match-card completed">
+            <div class="match-header">
+              <span class="match-date">{{ match.date|date:"d/m/Y H:i" }}</span>
+              <span class="match-status">Terminé</span>
+            </div>
+            <div class="match-teams">
+              <div class="team">
+                {% if match.home_team.logo and match.home_team.logo.url %}
+                  <img src="{{ match.home_team.logo.url }}" alt="{{ match.home_team.name }}" class="team-logo-small">
+                {% else %}
+                  <div class="team-logo-placeholder">{{ match.home_team.name|make_list|first }}</div>
+                {% endif %}
+                <span class="team-name">{{ match.home_team.name }}</span>
+              </div>
+              <div class="score">
+                {{ match.home_score }} - {{ match.away_score }}
+              </div>
+              <div class="team">
+                {% if match.away_team.logo and match.away_team.logo.url %}
+                  <img src="{{ match.away_team.logo.url }}" alt="{{ match.away_team.name }}" class="team-logo-small">
+                {% else %}
+                  <div class="team-logo-placeholder">{{ match.away_team.name|make_list|first }}</div>
+                {% endif %}
+                <span class="team-name">{{ match.away_team.name }}</span>
+              </div>
+            </div>
+            <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-secondary">Voir détails</a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+  
+  {% if completed_matchdays_data %}
+    <div class="completed-matchdays">
+      <h3>Journées précédentes</h3>
+      {% for matchday_data in completed_matchdays_data %}
+        <div class="matchday-section">
+          <h4>Journée {{ matchday_data.matchday.number }} - {{ matchday_data.matchday.date|date:"d F Y" }}</h4>
+          <div class="matches-grid">
+            {% for match in matchday_data.matches %}
+              <div class="match-card completed">
+                <div class="match-header">
+                  <span class="match-date">{{ match.date|date:"d/m/Y H:i" }}</span>
+                  <span class="match-status">Terminé</span>
+                </div>
+                <div class="match-teams">
+                  <div class="team">
+                    {% if match.home_team.logo and match.home_team.logo.url %}
+                      <img src="{{ match.home_team.logo.url }}" alt="{{ match.home_team.name }}" class="team-logo-small">
+                    {% else %}
+                      <div class="team-logo-placeholder">{{ match.home_team.name|make_list|first }}</div>
+                    {% endif %}
+                    <span class="team-name">{{ match.home_team.name }}</span>
+                  </div>
+                  <div class="score">
+                    {{ match.home_score }} - {{ match.away_score }}
+                  </div>
+                  <div class="team">
+                    {% if match.away_team.logo and match.away_team.logo.url %}
+                      <img src="{{ match.away_team.logo.url }}" alt="{{ match.away_team.name }}" class="team-logo-small">
+                    {% else %}
+                      <div class="team-logo-placeholder">{{ match.away_team.name|make_list|first }}</div>
+                    {% endif %}
+                    <span class="team-name">{{ match.away_team.name }}</span>
+                  </div>
+                </div>
+                <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-secondary">Voir détails</a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+<style>
+.matches-section {
+  margin-bottom: 30px;
+}
+
+.matches-section h4 {
+  color: var(--secondary-color);
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--light-color);
+}
+
+.current-matchday h3 {
+  color: var(--secondary-color);
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  /* border-bottom: 1px solid var(--light-color); */
+}
+
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.match-date {
+  font-size: 0.8em;
+  color: var(--text-color);
+}
+
+.match-status {
+  font-size: 0.8em;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.match-card.in-progress {
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.match-card.in-progress .match-status {
+  background-color: var(--warning-color);
+  color: #000;
+}
+
+.match-card.completed {
+  background-color: rgba(46, 204, 113, 0.1);
+}
+
+.match-card.completed .match-status {
+  background-color: var(--success-color);
+  color: #fff;
+}
+
+.score {
+  font-weight: bold;
+  font-size: 0.9em;
+  color: var(--secondary-color);
+}
+
+.matchday-section {
+  margin-bottom: 30px;
+}
+
+.matchday-section h4 {
+  color: var(--secondary-color);
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--light-color);
+}
+
+.team-logo-placeholder {
+  width: 24px;
+  height: 24px;
+  background-color: var(--secondary-color);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9em;
+  text-transform: uppercase;
+}
+
+.team-logo-small {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.team-name {
+  font-size: 0.8em;
+  color: var(--text-color);
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.league-selector select {
+    padding: 8px 12px;
+    border: 1px solid var(--light-color);
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    background-color: white;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.league-selector select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(var(--secondary-color-rgb), 0.1);
+}
+</style>
+{% endblock %} 

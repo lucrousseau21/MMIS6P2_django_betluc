@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h2>Mon Profil</h2>
+    
+    <div class="profile-info">
+        <p><strong>Nom d'utilisateur :</strong> {{ user.username }}</p>
+        <p><strong>Email :</strong> {{ user.email }}</p>
+        <p><strong>Solde :</strong> {{ user.balance }}€</p>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{% url 'teams:my_bets' %}" class="action-button">Historique des paris</a>
+        <a href="{% url 'edit_profile' %}" class="action-button">Modifier mon profil</a>
+        <a href="{% url 'password_change' %}" class="action-button">Changer mon mot de passe</a>
+    </div>
+
+    {% if user_bets %}
+    <div class="recent-bets">
+        <h3>Mes derniers paris</h3>
+        <div class="bets-list">
+            {% for bet in user_bets %}
+            <div class="bet-item">
+                <div class="bet-match">
+                    <a href="{% url 'teams:match_detail' bet.match.id %}">
+                        {{ bet.match.home_team }} vs {{ bet.match.away_team }}
+                    </a>
+                </div>
+                <div class="bet-details">
+                    <span class="bet-type">{{ bet.get_bet_type_display }}</span>
+                    <span class="bet-amount">{{ bet.amount }}€</span>
+                    <span class="bet-odds">Cote: {{ bet.odds }}</span>
+                    <span class="bet-status {% if bet.status == 'won' %}won{% elif bet.status == 'lost' %}lost{% else %}pending{% endif %}">
+                        {% if bet.status == 'won' %}
+                            Gagné
+                        {% elif bet.status == 'lost' %}
+                            Perdu
+                        {% else %}
+                            En attente
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .profile-info {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .profile-info p {
+        margin: 10px 0;
+        font-size: 1.1em;
+    }
+
+    .profile-actions {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+    }
+
+    .action-button {
+        padding: 10px 20px;
+        background: #2c3e50;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background 0.3s ease;
+    }
+
+    .action-button:hover {
+        background: #34495e;
+    }
+
+    .recent-bets {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .bet-item {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .bet-item:last-child {
+        border-bottom: none;
+    }
+
+    .bet-match {
+        margin-bottom: 8px;
+    }
+
+    .bet-match a {
+        color: #2c3e50;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .bet-match a:hover {
+        text-decoration: underline;
+    }
+
+    .bet-details {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        font-size: 0.9em;
+    }
+
+    .bet-type {
+        color: #666;
+    }
+
+    .bet-amount {
+        font-weight: 500;
+    }
+
+    .bet-odds {
+        color: #666;
+    }
+
+    .bet-status {
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+
+    .bet-status.won {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .bet-status.lost {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .bet-status.pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+</style>
+{% endblock %} 

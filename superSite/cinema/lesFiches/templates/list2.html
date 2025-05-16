@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %} Tous nos films {% endblock %}
+{% block content %}
+<h1>liste de nos avis </h1>
+<h2>Liste des fiches de film </h2>
+<ul>
+    {% for film in films %}
+    <li >{{ film.titre }} </li >
+    {% endfor %}
+</ul >
+{% endblock %}

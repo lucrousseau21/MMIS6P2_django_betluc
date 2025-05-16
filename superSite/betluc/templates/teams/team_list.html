@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if league %}
+    Équipes de {{ league.name }} - BetLuc
+  {% else %}
+    Toutes les équipes - BetLuc
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="team-list-container">
+  {% if league %}
+    <h2>Équipes de {{ league.name }}</h2>
+    <p>Pays: {{ league.country }}</p>
+    <a href="{% url 'teams:league_list' %}" class="btn btn-secondary">Toutes les ligues</a>
+  {% else %}
+    <h2>Toutes les équipes</h2>
+  {% endif %}
+  
+  {% if teams %}
+    <div class="teams-grid">
+      {% for team in teams %}
+        <div class="team-card">
+          <h3>{{ team.name }}</h3>
+          {% if team.logo %}
+            <img src="{{ team.logo.url }}" alt="{{ team.name }}" class="team-logo">
+          {% endif %}
+          <p><strong>Ville:</strong> {{ team.city }}</p>
+          <p><strong>Stade:</strong> {{ team.stadium }}</p>
+          <p><strong>Ligue:</strong> {{ team.league.name }}</p>
+          <a href="{% url 'teams:team_detail' team.id %}" class="btn btn-primary">Détails</a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>Aucune équipe n'est disponible pour le moment.</p>
+  {% endif %}
+</div>
+{% endblock %} 

@@ -1,0 +1,406 @@
+[
+    {
+        "model": "teams.league",
+        "pk": 1,
+        "fields": {
+            "name": "Ligue 1",
+            "country": "France"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 1,
+        "fields": {
+            "name": "Paris Saint-Germain",
+            "league": 1,
+            "city": "Paris",
+            "stadium": "Parc des Princes"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 2,
+        "fields": {
+            "name": "Olympique de Marseille",
+            "league": 1,
+            "city": "Marseille",
+            "stadium": "Orange Vélodrome"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 3,
+        "fields": {
+            "name": "AS Monaco",
+            "league": 1,
+            "city": "Monaco",
+            "stadium": "Stade Louis II"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 4,
+        "fields": {
+            "name": "Olympique Lyonnais",
+            "league": 1,
+            "city": "Lyon",
+            "stadium": "Groupama Stadium"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 5,
+        "fields": {
+            "name": "LOSC Lille",
+            "league": 1,
+            "city": "Lille",
+            "stadium": "Stade Pierre-Mauroy"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 6,
+        "fields": {
+            "name": "Stade Rennais",
+            "league": 1,
+            "city": "Rennes",
+            "stadium": "Roazhon Park"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 7,
+        "fields": {
+            "name": "OGC Nice",
+            "league": 1,
+            "city": "Nice",
+            "stadium": "Allianz Riviera"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 8,
+        "fields": {
+            "name": "RC Lens",
+            "league": 1,
+            "city": "Lens",
+            "stadium": "Stade Bollaert-Delelis"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 9,
+        "fields": {
+            "name": "Stade de Reims",
+            "league": 1,
+            "city": "Reims",
+            "stadium": "Stade Auguste-Delaune"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 10,
+        "fields": {
+            "name": "FC Nantes",
+            "league": 1,
+            "city": "Nantes",
+            "stadium": "Stade de la Beaujoire"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 11,
+        "fields": {
+            "name": "Montpellier HSC",
+            "league": 1,
+            "city": "Montpellier",
+            "stadium": "Stade de la Mosson"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 12,
+        "fields": {
+            "name": "Toulouse FC",
+            "league": 1,
+            "city": "Toulouse",
+            "stadium": "Stadium de Toulouse"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 13,
+        "fields": {
+            "name": "Stade Brestois",
+            "league": 1,
+            "city": "Brest",
+            "stadium": "Stade Francis-Le Blé"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 14,
+        "fields": {
+            "name": "RC Strasbourg",
+            "league": 1,
+            "city": "Strasbourg",
+            "stadium": "Stade de la Meinau"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 15,
+        "fields": {
+            "name": "FC Lorient",
+            "league": 1,
+            "city": "Lorient",
+            "stadium": "Stade du Moustoir"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 16,
+        "fields": {
+            "name": "Le Havre AC",
+            "league": 1,
+            "city": "Le Havre",
+            "stadium": "Stade Océane"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 17,
+        "fields": {
+            "name": "Clermont Foot",
+            "league": 1,
+            "city": "Clermont-Ferrand",
+            "stadium": "Stade Gabriel-Montpied"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 18,
+        "fields": {
+            "name": "FC Metz",
+            "league": 1,
+            "city": "Metz",
+            "stadium": "Stade Saint-Symphorien"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 19,
+        "fields": {
+            "name": "AJ Auxerre",
+            "league": 1,
+            "city": "Auxerre",
+            "stadium": "Stade de l'Abbé-Deschamps"
+        }
+    },
+    {
+        "model": "teams.team",
+        "pk": 20,
+        "fields": {
+            "name": "AS Saint-Étienne",
+            "league": 1,
+            "city": "Saint-Étienne",
+            "stadium": "Stade Geoffroy-Guichard"
+        }
+    },
+    {
+        "model": "teams.matchday",
+        "pk": 1,
+        "fields": {
+            "league": 1,
+            "number": 1,
+            "date": "2024-08-18",
+            "is_completed": false
+        }
+    },
+    {
+        "model": "teams.matchday",
+        "pk": 2,
+        "fields": {
+            "league": 1,
+            "number": 2,
+            "date": "2024-08-25",
+            "is_completed": false
+        }
+    },
+    {
+        "model": "teams.matchday",
+        "pk": 3,
+        "fields": {
+            "league": 1,
+            "number": 3,
+            "date": "2024-09-01",
+            "is_completed": false
+        }
+    },
+    {
+        "model": "teams.matchday",
+        "pk": 4,
+        "fields": {
+            "league": 1,
+            "number": 4,
+            "date": "2024-09-15",
+            "is_completed": false
+        }
+    },
+    {
+        "model": "teams.match",
+        "pk": 1,
+        "fields": {
+            "matchday": 1,
+            "home_team": 1,
+            "away_team": 2,
+            "date": "2024-08-18T20:00:00Z",
+            "home_score": null,
+            "away_score": null,
+            "status": "scheduled"
+        }
+    },
+    {
+        "model": "teams.match",
+        "pk": 2,
+        "fields": {
+            "matchday": 1,
+            "home_team": 3,
+            "away_team": 4,
+            "date": "2024-08-18T17:00:00Z",
+            "home_score": null,
+            "away_score": null,
+            "status": "scheduled"
+        }
+    },
+    {
+        "model": "teams.match",
+        "pk": 3,
+        "fields": {
+            "matchday": 1,
+            "home_team": 5,
+            "away_team": 6,
+            "date": "2024-08-18T15:00:00Z",
+            "home_score": null,
+            "away_score": null,
+            "status": "scheduled"
+        }
+    },
+    {
+        "model": "teams.match",
+        "pk": 4,
+        "fields": {
+            "matchday": 2,
+            "home_team": 2,
+            "away_team": 1,
+            "date": "2024-08-25T20:00:00Z",
+            "home_score": null,
+            "away_score": null,
+            "status": "scheduled"
+        }
+    },
+    {
+        "model": "teams.match",
+        "pk": 5,
+        "fields": {
+            "matchday": 2,
+            "home_team": 4,
+            "away_team": 3,
+            "date": "2024-08-25T17:00:00Z",
+            "home_score": null,
+            "away_score": null,
+            "status": "scheduled"
+        }
+    },
+    {
+        "model": "teams.match",
+        "pk": 6,
+        "fields": {
+            "matchday": 2,
+            "home_team": 6,
+            "away_team": 5,
+            "date": "2024-08-25T15:00:00Z",
+            "home_score": null,
+            "away_score": null,
+            "status": "scheduled"
+        }
+    },
+    {
+        "model": "teams.match",
+        "pk": 7,
+        "fields": {
+            "matchday": 3,
+            "home_team": 1,
+            "away_team": 3,
+            "date": "2024-09-01T20:00:00Z",
+            "home_score": null,
+            "away_score": null,
+            "status": "scheduled"
+        }
+    },
+    {
+        "model": "teams.match",
+        "pk": 8,
+        "fields": {
+            "matchday": 3,
+            "home_team": 2,
+            "away_team": 4,
+            "date": "2024-09-01T17:00:00Z",
+            "home_score": null,
+            "away_score": null,
+            "status": "scheduled"
+        }
+    },
+    {
+        "model": "teams.match",
+        "pk": 9,
+        "fields": {
+            "matchday": 3,
+            "home_team": 5,
+            "away_team": 7,
+            "date": "2024-09-01T15:00:00Z",
+            "home_score": null,
+            "away_score": null,
+            "status": "scheduled"
+        }
+    },
+    {
+        "model": "teams.match",
+        "pk": 10,
+        "fields": {
+            "matchday": 4,
+            "home_team": 3,
+            "away_team": 1,
+            "date": "2024-09-15T20:00:00Z",
+            "home_score": null,
+            "away_score": null,
+            "status": "scheduled"
+        }
+    },
+    {
+        "model": "teams.match",
+        "pk": 11,
+        "fields": {
+            "matchday": 4,
+            "home_team": 4,
+            "away_team": 2,
+            "date": "2024-09-15T17:00:00Z",
+            "home_score": null,
+            "away_score": null,
+            "status": "scheduled"
+        }
+    },
+    {
+        "model": "teams.match",
+        "pk": 12,
+        "fields": {
+            "matchday": 4,
+            "home_team": 7,
+            "away_team": 5,
+            "date": "2024-09-15T15:00:00Z",
+            "home_score": null,
+            "away_score": null,
+            "status": "scheduled"
+        }
+    }
+] 

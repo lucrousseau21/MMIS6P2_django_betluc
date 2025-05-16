@@ -1,0 +1,122 @@
+Metadata-Version: 2.4
+Name: betluc
+Version: 1.0
+Summary: Application de paris sportifs
+Home-page: https://github.com/votre-repo/betluc
+Author: Votre Nom
+Author-email: votre.email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: Django>=4.2.0
+Requires-Dist: django-crispy-forms>=2.0
+Requires-Dist: crispy-bootstrap5>=0.7
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# BetLuc - Application de Paris Sportifs
+
+BetLuc est une application web de paris sportifs permettant aux utilisateurs de parier sur des matchs de football.
+
+## PrÃ©requis
+
+- Python 3.8 ou supÃ©rieur
+- pip (gestionnaire de paquets Python)
+- Un environnement virtuel Python (recommandÃ©)
+
+## Installation
+
+1. Clonez le dÃ©pÃ´t :
+```bash
+git clone [URL_DU_REPO]
+cd betluc
+```
+
+2. CrÃ©ez et activez un environnement virtuel :
+```bash
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# Linux/Mac
+python3 -m venv venv
+source venv/bin/activate
+```
+
+3. Installez les dÃ©pendances :
+```bash
+pip install -r requirements.txt
+```
+
+4. Configurez la base de donnÃ©es :
+```bash
+python manage.py migrate
+```
+
+5. Initialisez les donnÃ©es :
+```bash
+python setup.py
+```
+
+Cette commande va :
+- Charger les Ã©quipes et les journÃ©es initiales
+- GÃ©nÃ©rer 30 journÃ©es de matchs
+- CrÃ©er 30 utilisateurs avec des paris alÃ©atoires
+
+## DÃ©marrage
+
+1. Lancez le serveur de dÃ©veloppement :
+```bash
+python manage.py runserver
+```
+
+2. AccÃ©dez Ã  l'application dans votre navigateur :
+```
+http://127.0.0.1:8000
+```
+
+## FonctionnalitÃ©s
+
+- Inscription et connexion des utilisateurs
+- Consultation des matchs et des cotes
+- Placement de paris
+- Suivi des paris en cours et de l'historique
+- DÃ©pÃ´t et retrait d'argent
+- Classement des parieurs
+- Avancement automatique des matchs
+
+## Configuration
+
+- Les matchs sont gÃ©nÃ©rÃ©s automatiquement pour 30 journÃ©es
+- Chaque journÃ©e contient 5 matchs
+- Les utilisateurs sont crÃ©Ã©s avec :
+  - Des noms d'utilisateur alÃ©atoires (combinaison de prÃ©noms et noms franÃ§ais)
+  - Des adresses email au format `username@gmail.com`
+  - Le mot de passe `azerty` pour tous les utilisateurs
+  - Des soldes initiaux entre 100â‚¬ et 1000â‚¬
+  - Entre 5 et 15 paris alÃ©atoires par utilisateur
+
+## Maintenance
+
+Pour mettre Ã  jour l'Ã©tat des matchs :
+```bash
+python manage.py update_match_statuses
+```
+
+Pour mettre Ã  jour un match spÃ©cifique :
+```bash
+python manage.py update_specific_match [ID_DU_MATCH]
+```
+
+## Support
+
+Pour toute question ou problÃ¨me, veuillez ouvrir une issue sur le dÃ©pÃ´t GitHub. 

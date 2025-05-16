@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}{{ matchday.league.name }} - Journée {{ matchday.number }} - BetLuc{% endblock %}
+
+{% block content %}
+<div class="matchday-detail-container">
+  <h2>{{ matchday.league.name }} - Journée {{ matchday.number }}</h2>
+  <p class="matchday-date">Date: {{ matchday.date|date:"d/m/Y" }}</p>
+  
+  <div class="actions">
+    <a href="{% url 'teams:matchday_list' matchday.league.id %}" class="btn btn-secondary">Toutes les journées</a>
+    <a href="{% url 'teams:league_matches' matchday.league.id %}" class="btn btn-secondary">Tous les matchs</a>
+  </div>
+  
+  {% if matches %}
+    <div class="matches-list">
+      {% for match in matches %}
+        <div class="match-row {% if match.status == 'completed' %}completed{% endif %}">
+          <div class="match-date">
+            {{ match.date|date:"d/m/Y H:i" }}
+          </div>
+          
+          <div class="match-teams">
+            <div class="team home-team">
+              {% if match.status == 'completed' %}
+                <span class="score">{{ match.home_score }}</span>
+              {% endif %}
+              <span class="team-name">{{ match.home_team.name }}</span>
+            </div>
+            
+            <div class="vs">
+              {% if match.status == 'scheduled' %}
+                VS
+              {% else %}
+                -
+              {% endif %}
+            </div>
+            
+            <div class="team away-team">
+              {% if match.status == 'completed' %}
+                <span class="score">{{ match.away_score }}</span>
+              {% endif %}
+              <span class="team-name">{{ match.away_team.name }}</span>
+            </div>
+          </div>
+          
+          <div class="match-status">
+            {{ match.get_status_display }}
+          </div>
+          
+          <div class="match-actions">
+            <a href="{% url 'teams:match_detail' match.id %}" class="btn btn-primary">Détails</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>Aucun match n'est programmé pour cette journée.</p>
+  {% endif %}
+</div>
+{% endblock %} 
