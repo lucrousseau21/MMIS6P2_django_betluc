@@ -76,6 +76,7 @@ def matchday_detail(request, matchday_id):
         'matches': matches
     })
 
+@login_required
 def match_list(request, league_id=None):
     # Récupérer la prochaine journée
     league = None
