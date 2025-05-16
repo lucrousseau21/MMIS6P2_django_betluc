@@ -177,6 +177,14 @@ def match_detail(request, match_id):
     # Si le match est programmé, permettre les paris
     can_bet = match.status == 'scheduled'
     
+    # Récupérer le score actuel du match, même s'il est en cours
+    current_score = None
+    if match.status in ['live', 'completed']:
+        current_score = {
+            'home_score': match.home_score,
+            'away_score': match.away_score
+        }
+    
     if request.method == 'POST' and can_bet and not user_bet:
         form = BetForm(request.POST)
         if form.is_valid():
@@ -209,7 +217,8 @@ def match_detail(request, match_id):
         'odds': odds,
         'form': form,
         'user_bet': user_bet,
-        'can_bet': can_bet
+        'can_bet': can_bet,
+        'current_score': current_score
     })
 
 @login_required

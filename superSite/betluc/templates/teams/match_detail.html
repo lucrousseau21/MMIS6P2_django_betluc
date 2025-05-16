@@ -18,26 +18,28 @@
     <span class="status-badge {{ match.status }}">{{ match.get_status_display }}</span>
   </div>
 
-  {% if match.status == 'completed' %}
+  {% if current_score %}
     <div class="match-result">
-      <div class="team {% if match.result == 'home_win' %}winner{% endif %}">
+      <div class="team {% if match.status == 'completed' and match.result == 'home_win' %}winner{% endif %}">
         {{ match.home_team }}
-        <span class="score">{{ match.home_score }}</span>
+        <span class="score">{{ current_score.home_score }}</span>
       </div>
-      <div class="team {% if match.result == 'draw' %}winner{% endif %}">
+      <div class="team {% if match.status == 'completed' and match.result == 'draw' %}winner{% endif %}">
         <span class="result-text">
-          {% if match.result == 'home_win' %}
-            Victoire domicile
-          {% elif match.result == 'away_win' %}
-            Victoire extérieur
-          {% elif match.result == 'draw' %}
-            Match nul
+          {% if match.status == 'completed' %}
+            {% if match.result == 'home_win' %}
+              Victoire domicile
+            {% elif match.result == 'away_win' %}
+              Victoire extérieur
+            {% elif match.result == 'draw' %}
+              Match nul
+            {% endif %}
           {% endif %}
         </span>
       </div>
-      <div class="team {% if match.result == 'away_win' %}winner{% endif %}">
+      <div class="team {% if match.status == 'completed' and match.result == 'away_win' %}winner{% endif %}">
         {{ match.away_team }}
-        <span class="score">{{ match.away_score }}</span>
+        <span class="score">{{ current_score.away_score }}</span>
       </div>
     </div>
   {% endif %}
