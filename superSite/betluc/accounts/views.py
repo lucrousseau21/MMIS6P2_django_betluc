@@ -109,7 +109,6 @@ def withdraw(request):
     return redirect('accounts:profile')
 
 # def leaderboard(request):
-#     # Récupérer tous les utilisateurs avec leurs statistiques
 #     users = Utilisateur.objects.annotate(
 #         total_bets=Count('bets'),
 #         won_bets=Count(
