@@ -28,42 +28,38 @@ Application web de paris sportifs développée avec Django, permettant aux utili
 
 2. **Créer un environnement virtuel**
    ```bash
-   # Sur Windows
-   python -m venv venv
-   venv\Scripts\activate
-
-   # Sur Linux/Mac
-   python3 -m venv venv
-   source venv/bin/activate
+   source Scripts/Activate
    ```
 
 3. **Installer les dépendances**
    ```bash
+   cd ../
    pip install -r requirements.txt
    ```
 
-4. **Configurer les variables d'environnement**
+<!-- 4. **Configurer les variables d'environnement**
    - Créez un fichier `.env` à la racine du projet
    - Ajoutez les variables suivantes :
      ```
      DEBUG=True
      SECRET_KEY=votre_clé_secrète
      DATABASE_URL=sqlite:///db.sqlite3
-     ```
+     ``` -->
 
-5. **Effectuer les migrations de la base de données**
+<!-- 5. **Effectuer les migrations de la base de données**
    ```bash
    python manage.py makemigrations
    python manage.py migrate
-   ```
+   ``` -->
 
-6. **Créer un superutilisateur (admin)**
+<!-- 6. **Créer un superutilisateur (admin)**
    ```bash
    python manage.py createsuperuser
-   ```
+   ``` -->
 
 7. **Lancer le serveur de développement**
    ```bash
+   cd superSite/betluc
    python manage.py runserver
    ```
 
@@ -87,7 +83,7 @@ MMIS6P2_django_betluc/
 └── manage.py             # Script de gestion Django
 ```
 
-## Utilisation
+<!-- ## Utilisation
 
 1. **Créer un compte**
    - Accédez à http://127.0.0.1:8000/accounts/register/
@@ -129,7 +125,7 @@ Pour contribuer au projet :
 
 Pour toute question ou problème, veuillez :
 - Ouvrir une issue sur GitHub
-- Contacter l'équipe de développement
+- Contacter l'équipe de développement -->
 
 ## Licence
 
