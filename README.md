@@ -71,16 +71,16 @@ Application web de paris sportifs développée avec Django, permettant aux utili
 
 ```
 MMIS6P2_django_betluc/
-├── superSite/              # Projet Django principal
-│   ├── betluc/            # Application principale
-│   │   ├── accounts/      # Gestion des utilisateurs
-│   │   ├── teams/         # Gestion des équipes et matchs
-│   │   └── bets/          # Gestion des paris
-│   ├── static/            # Fichiers statiques (CSS, JS, images)
-│   └── templates/         # Templates HTML
-├── media/                 # Fichiers médias uploadés
-├── requirements.txt       # Dépendances du projet
-└── manage.py             # Script de gestion Django
+├── superSite/
+│   ├── betluc/
+│   │   ├── accounts/
+│   │   ├── teams/
+│   │   └── bets/
+│   ├── static/
+│   └── templates/
+├── media/
+├── requirements.txt
+└── manage.py
 ```
 
 <!-- ## Utilisation
