@@ -120,8 +120,17 @@
         {% endif %}
     </header>
     <main>{% block content %}{% endblock %}</main>
-    <footer>
-        <p>&copy; 2025 BetLuc - Tous droits réservés - IUT de Lens, Université d'Artois </p>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 BetLuc. Tous droits réservés.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="{% url 'rules' %}" class="text-decoration-none text-muted">Règles de BetLuc</a>
+                </div>
+            </div>
+        </div>
     </footer>
   </body>
 </html> 
